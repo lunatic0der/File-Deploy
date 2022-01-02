@@ -37,8 +37,8 @@ _set_bot () {
     echo "  Starting File Sharing Bot"
     echo "  FileSharingMan - [🔥 BERHASIL DIAKTIFKAN! 🔥]"
 
-    python3 ./setup/updater.py ./requirements.txt requirements.txt
-    python3 -m FileSharingMan
+    python3 ./requirements.txt requirements.txt
+    python3 -m main.py
 }
 
 _set_bot
