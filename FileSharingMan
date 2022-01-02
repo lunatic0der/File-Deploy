@@ -35,9 +35,8 @@ _set_bot () {
     sleep 5
     cd $PATHMAN
     echo "  Starting File Sharing Bot"
-    echo "  FileSharingMan - [🔥 BERHASIL DIAKTIFKAN! 🔥]"
 
-    python3 ./requirements.txt requirements.txt
+    python3 ../setup/updater.py ../requirements.txt requirements.txt
     python3 -m main.py
 }
 
