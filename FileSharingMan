@@ -1,0 +1,44 @@
+#!/bin/bash
+
+
+_get_repolink () {
+    local regex
+    regex='(https?)://github.com/.+/.+'
+    if [[ $REPO == "master" ]]
+    then
+        echo "aHR0cHM6Ly9naXRodWIuY29tL21yaXNtYW5heml6L0ZpbGUtU2hhcmluZy1NYW4vYXJjaGl2ZS9tYXN0ZXIuemlw" | base64 -d
+    elif [[ $REPO =~ $regex ]]
+    then
+        if [[ $REPO_BRANCH ]]
+        then
+            echo "${REPO}/archive/${REPO_BRANCH}.zip"
+        else
+            echo "${REPO}/archive/master.zip"
+        fi
+    else
+        echo "aHR0cHM6Ly9naXRodWIuY29tL21yaXNtYW5heml6L0ZpbGUtU2hhcmluZy1NYW4vYXJjaGl2ZS9tYXN0ZXIuemlw" | base64 -d
+    fi
+}
+
+
+_set_bot () {
+    local zippath
+    zippath="FileSharingMan.zip"
+    echo "  Downloading source code"
+    wget -q $(_get_repolink) -O "$zippath"
+    echo "  Unpacking Data"
+    PATHMAN=$(zipinfo -1 "$zippath" | grep -v "/.");
+    unzip -qq "$zippath"
+    echo "  Done"
+    echo "  Cleaning"
+    rm -rf "$zippath"
+    sleep 5
+    cd $PATHMAN
+    echo "  Starting File Sharing Bot"
+    echo "  FileSharingMan - [🔥 BERHASIL DIAKTIFKAN! 🔥]"
+
+    python3 ./setup/updater.py ./requirements.txt requirements.txt
+    python3 -m FileSharingMan
+}
+
+_set_bot
